@@ -129,7 +129,7 @@ class Gamepad:
         If ``always`` is ``False`` (the default), send only if there have been changes.
         """
         struct.pack_into(
-            "<Hbbbb",
+            "<Lbbbb",
             self._report,
             0,
             self._buttons_state,
