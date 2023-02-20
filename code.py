@@ -23,9 +23,9 @@ enc3 = rotaryio.IncrementalEncoder(board.GP6, board.GP7)
 enc3_last_position = enc3.position
 enc3_current_position = enc3.position
 
-#Create a collection of GPIO pins that represent the buttons
-#This includes the digital pins for the Directional Pad.
-#They can be used as regular buttons if using the analog inputs instead )
+# Create a collection of GPIO pins that represent the buttons
+# The six GP-Pins are not really used, it's just a hacky solution
+# to get buttons on the gamecontroller for the rotary encoders
 button_pins = (board.GP11, board.GP10,
                board.GP12, board.GP13,
                board.GP14, board.GP15,
