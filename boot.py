@@ -1,9 +1,9 @@
 import storage
 import usb_hid
 
-storage.disable_usb_drive()
+# uncomment next line to hide the exposed storage device from the os
+# storage.disable_usb_drive()
 
-# This is only one example of a gamepad descriptor, and may not suit your needs.
 GAMEPAD_REPORT_DESCRIPTOR = bytes((
     0x05, 0x01,  # Usage Page (Generic Desktop Ctrls)
     0x09, 0x05,  # Usage (Game Pad)
