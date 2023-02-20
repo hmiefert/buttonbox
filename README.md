@@ -1,5 +1,5 @@
 # buttonbox
-SimRacing buttonbox with Raspberry Pico 2040, circuit-python, adafruit_hid<br>
+SimRacing buttonbox with Raspberry Pico 2040, [circuit-python](https://circuitpython.org/board/raspberry_pi_pico), [adafruit_hid](https://circuitpython.org/libraries)<br><br>
 ![buttonbox](https://raw.githubusercontent.com/hmiefert/buttonbox/6171ab1391504d43c9cc06a5e86e17c3a5892e63/img/buttonbox.jpg?raw=true)
 
 
