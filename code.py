@@ -4,18 +4,25 @@ import digitalio
 import rotaryio
 import usb_hid
 
+from time import sleep
+
 #library for communicating as a gamepad
 from hid_gamepad import Gamepad
 
 gp = Gamepad(usb_hid.devices)
 
 enc1 = rotaryio.IncrementalEncoder(board.GP0, board.GP1)
-enc2 = rotaryio.IncrementalEncoder(board.GP3, board.GP4)
-enc3 = rotaryio.IncrementalEncoder(board.GP6, board.GP7)
+enc1_last_position = enc1.position
+enc1_current_position = enc1.position
 
-enc1_last_pos = None
-enc2_last_pos = None
-enc3_last_pos = None
+enc2 = rotaryio.IncrementalEncoder(board.GP3, board.GP4)
+enc2_last_position = enc2.position
+enc2_current_position = enc2.position
+
+enc3 = rotaryio.IncrementalEncoder(board.GP6, board.GP7)
+enc3_last_position = enc3.position
+enc3_current_position = enc3.position
+
 #Create a collection of GPIO pins that represent the buttons
 #This includes the digital pins for the Directional Pad.
 #They can be used as regular buttons if using the analog inputs instead )
@@ -36,35 +43,67 @@ gamepad_buttons = (1, 2, 3 ,4 ,5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18
 
 buttons = [digitalio.DigitalInOut(pin) for pin in button_pins]
 
+debounce_delay = 0.05
+
 #Initialize The Buttons
 for button in buttons:
     button.direction = digitalio.Direction.INPUT
     button.pull = digitalio.Pull.UP
       
 while True:
-    pos1 = enc1.position
-    if enc1_last_pos != None and pos1 > enc1_last_pos:
-        gp.click_buttons(17)
-    elif enc1_last_pos != None and pos1 < enc1_last_pos:
-        gp.click_buttons(16)
-    enc1_last_pos = pos1
+    enc1_current_position = enc1.position
+    if enc1_current_position > enc1_last_position:
+        enc1_position_change = abs(enc1_current_position - enc1_last_position)
+        for _ in range(enc1_position_change):
+            gp.press_buttons(17)
+            sleep(debounce_delay)
+            gp.release_buttons(17)
+            sleep(debounce_delay)
+    elif enc1_current_position < enc1_last_position:
+        enc1_position_change = abs(enc1_current_position - enc1_last_position)
+        for _ in range(enc1_position_change):
+            gp.press_buttons(16)
+            sleep(debounce_delay)
+            gp.release_buttons(16)
+            sleep(debounce_delay)
+    enc1_last_position = enc1_current_position
  
-    pos2 = enc2.position
-    if enc2_last_pos != None and pos2 > enc2_last_pos:
-        gp.click_buttons(19)
-    elif enc2_last_pos != None and pos2 < enc2_last_pos:
-        gp.click_buttons(18)
-    enc2_last_pos = pos2
+    enc2_current_position = enc2.position
+    if enc2_current_position > enc2_last_position:
+        enc2_position_change = abs(enc2_current_position - enc2_last_position)
+        for _ in range(enc2_position_change):
+            gp.press_buttons(19)
+            sleep(debounce_delay)
+            gp.release_buttons(19)
+            sleep(debounce_delay)
+    elif enc2_current_position < enc2_last_position:
+        enc2_position_change = abs(enc2_current_position - enc2_last_position)
+        for _ in range(enc2_position_change):
+            gp.press_buttons(18)
+            sleep(debounce_delay)
+            gp.release_buttons(18)
+            sleep(debounce_delay)
+    enc2_last_position = enc2_current_position
+    
+    enc3_current_position = enc3.position
+    if enc3_current_position > enc3_last_position:
+        enc3_position_change = abs(enc3_current_position - enc3_last_position)
+        for _ in range(enc3_position_change):
+            gp.press_buttons(21)
+            sleep(debounce_delay)
+            gp.release_buttons(21)
+            sleep(debounce_delay)
+    elif enc3_current_position < enc3_last_position:
+        enc3_position_change = abs(enc3_current_position - enc3_last_position)
+        for _ in range(enc3_position_change):
+            gp.press_buttons(20)
+            sleep(debounce_delay)
+            gp.release_buttons(20)
+            sleep(debounce_delay)
+    enc3_last_position = enc3_current_position
  
-    pos3 = enc3.position
-    if enc3_last_pos != None and pos3 > enc3_last_pos:
-        gp.click_buttons(21)
-    elif enc3_last_pos != None and pos3 < enc3_last_pos:
-        gp.click_buttons(20)
-    enc3_last_pos = pos3
- 
-    for btn_id, button in enumerate(buttons):
-        if button.value:
-            gp.release_buttons(btn_id+1)
+    for i in range(15):
+        if buttons[i].value:
+            gp.release_buttons(i+1)
         else:
-            gp.press_buttons(btn_id+1)
+            gp.press_buttons(i+1)

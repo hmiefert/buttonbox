@@ -1,4 +1,7 @@
+import storage
 import usb_hid
+
+storage.disable_usb_drive()
 
 # This is only one example of a gamepad descriptor, and may not suit your needs.
 GAMEPAD_REPORT_DESCRIPTOR = bytes((
